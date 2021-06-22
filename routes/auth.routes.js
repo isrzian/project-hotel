@@ -36,7 +36,8 @@ router.post(
             response.status(201).json({message: "User is created!"})
         }
         catch (e) {
-            response.status(500).json({message: "Register is failed, try again!"})
+            console.log(e)
+            response.status(500).json({message: "Incorrect data during registration!"})
         }
 })
 
@@ -59,11 +60,11 @@ router.post(
             const {email, password} = request.body
             const user = await User.findOne({email})
             if (!user) {
-                return response.status(400).json({message: 'Error!'})
+                return response.status(400).json({message: 'User not found!'})
             }
             const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch) {
-                return response.status(400).json({message: 'Error! Try again!'})
+                return response.status(400).json({message: 'Invalid password!'})
             }
             const token = jwt.sign(
                 {userId: user.id},
@@ -73,7 +74,7 @@ router.post(
             response.status(200).json({token, userId: user.id})
         }
         catch (e) {
-            response.status(500).json({message: "Error, try again!"})
+            response.status(500).json({message: "Invalid login data!"})
         }
 })
 
