@@ -1,5 +1,6 @@
 {
   "port": 5000,
   "mongoUri": "mongodb+srv://isrzian:jvdCHuujkV4xnjV@cluster0.uwzo4.mongodb.net/app?retryWrites=true&w=majority",
-  "host": "localhost"
+  "host": "localhost",
+  "jwtSecretKey": "Digital Mind Development"
 }
