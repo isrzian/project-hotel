@@ -1,0 +1,33 @@
+{
+  "name": "project-hotel",
+  "version": "1.0.0",
+  "description": "Test task from the Digital Mind Development",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isrzian/project-hotel.git"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "mongo"
+  ],
+  "author": "Ilia Rziankin <shadow-sergej@ya.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isrzian/project-hotel/issues"
+  },
+  "homepage": "https://github.com/isrzian/project-hotel#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.14"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.7"
+  }
+}
