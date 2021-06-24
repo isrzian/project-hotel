@@ -12,7 +12,8 @@ const schema = new Schema({
     },
     isAdmin: {
         type: Boolean,
-        required: false
+        required: true,
+        default: true
     },
     rooms: [
         {

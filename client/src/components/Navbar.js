@@ -15,9 +15,10 @@ export const Navbar = () => {
             <div className="nav-wrapper blue-grey darken-1" style={{padding: '0 2 rem'}}>
                 <span className="brand-logo center">Hotel Management System</span>
                 <ul id="nav-mobile" className="left hide-on-med-and-down">
-                    <li><NavLink to="/create-room">Создать комнату</NavLink></li>
-                    <li><NavLink to="/rooms">Список комнат</NavLink></li>
-                    <li><a href="/" onClick={logoutHandler}>Выйти из системы</a></li>
+                    <li><NavLink to="/create-room">Create room</NavLink></li>
+                    <li><NavLink to="/rooms">List of rooms</NavLink></li>
+                    <li><NavLink to="/conveniences">Conveniences</NavLink></li>
+                    <li><a href="/" onClick={logoutHandler}>Log out</a></li>
                 </ul>
             </div>
         </nav>

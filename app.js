@@ -7,6 +7,8 @@ const app = express()
 app.use(express.json({extended: true}))
 
 app.use('/api/auth', require('./routes/auth.routes'))
+app.use('/api/room', require('./routes/room.routes'))
+app.use('/api/convenience', require('./routes/conveniences.routes'))
 
 const PORT = config.get('port') || 5000
 
