@@ -24,8 +24,12 @@ export const ConveniencePage = () => {
     }, [])
 
     const loadListHandler = async () => {
-        const listConvenience = await request('/api/convenience')
-        setList(listConvenience)
+        try {
+            const listConvenience = await request('/api/convenience')
+            message(listConvenience.message)
+            setList(listConvenience)
+        }
+        catch (e) {}
     }
 
     const createConvenienceHandler = async () => {
@@ -84,7 +88,7 @@ export const ConveniencePage = () => {
                 </div>
                 <div id="list" className="col s12">
                     {loading && list.length ? <Loader /> : <ul className="collection">
-                        {list.length ?? !loading ? list.map((convenience, index) => {
+                        {list.length && !loading ? list.map((convenience, index) => {
                             return (
                                 <li className="collection-item" key={index}>{convenience.title} - {convenience.manufacturer}</li>
                             )
