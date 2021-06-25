@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
 import {Loader} from '../components/UI/Loader'
@@ -23,18 +23,34 @@ export const ConveniencePage = () => {
         window.M.Tabs.init(tabs)
     }, [])
 
-    const loadListHandler = async () => {
+    const getListConvenience = useCallback(async () => {
         try {
             const listConvenience = await request('/api/convenience')
-            message(listConvenience.message)
             setList(listConvenience)
         }
         catch (e) {}
+    }, [request, setList])
+
+    useEffect(() => {
+        getListConvenience()
+    }, [getListConvenience])
+
+    const deleteConvenienceHandler = (id, index) => {
+        return async () => {
+            try {
+                const data = await request(`/api/convenience/delete/${id}`, 'DELETE', {...form})
+                const listConvenience = await request('/api/convenience')
+                setList(listConvenience)
+                message(data.message)
+            }
+            catch (e) {}
+        }
     }
 
     const createConvenienceHandler = async () => {
         try {
             const data = await request('/api/convenience/create', 'POST', {...form})
+            setForm({title: '', manufacturer: ''})
             message(data.message)
         }
         catch (e) {}
@@ -50,7 +66,7 @@ export const ConveniencePage = () => {
                 <div className="col s12">
                     <ul className="tabs" style={{paddingBottom: '2rem'}}>
                         <li className="tab col s3"><a className="active" href="#add">Add convenience</a></li>
-                        <li className="tab col s3" onClick={loadListHandler}><a href="#list">List of convenience</a></li>
+                        <li onClick={getListConvenience} className="tab col s3"><a href="#list">List of convenience</a></li>
                     </ul>
                 </div>
                 <div id="add" className="col s12">
@@ -90,7 +106,10 @@ export const ConveniencePage = () => {
                     {loading && list.length ? <Loader /> : <ul className="collection">
                         {list.length && !loading ? list.map((convenience, index) => {
                             return (
-                                <li className="collection-item" key={index}>{convenience.title} - {convenience.manufacturer}</li>
+                                <li className="collection-item" key={index}>
+                                    {convenience.title} - {convenience.manufacturer}
+                                    <span className="badge"><i onClick={deleteConvenienceHandler(convenience._id, index)} style={{cursor: 'pointer'}} className="material-icons">clear</i></span>
+                                </li>
                             )
                         }) : <p>Conveniences have not been added yet.</p>}
                     </ul>}

@@ -1,13 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
+import {useHistory} from 'react-router-dom'
 import {useHttp} from "../hooks/http.hook";
 import {useMessage} from "../hooks/message.hook";
 
 export const CreateRoom = () => {
+    const history = useHistory()
     const message = useMessage()
     const {request, loading, error, clearErrors} = useHttp()
-    const [conveniences, setConvenience] = useState({
-        id: '', quantity: 0
+
+    const [list, setList] = useState([]) // all convenience
+
+    const [listConvenience, setListConvenience] = useState({  //convenience for form
+        _id: '', quantity: 0
     })
+
+    useEffect(() => {
+        message(error)
+        clearErrors()
+    }, [error, message, clearErrors])
+
     const [form, setForm] = useState({
         title: '',
         description: '',
@@ -17,46 +28,48 @@ export const CreateRoom = () => {
         convenience: []
     })
 
-    const [listConv, setListConv] = useState([])
+    useEffect(() => {
+        window.M.updateTextFields()
+        let tabs = document.querySelectorAll('.tabs')
+        let select = document.querySelectorAll('select');
+        window.M.Tabs.init(tabs)
+        window.M.FormSelect.init(select)
+    }, [])
 
-    const loadListHandler = async () => {
+    const getListConvenience = useCallback(async () => {
         try {
             const listConvenience = await request('/api/convenience')
-            message(listConvenience.message)
-            setListConv(listConvenience)
+            setList(listConvenience)
+        }
+        catch (e) {}
+    }, [request])
+
+    useEffect(() => {
+        getListConvenience()
+    }, [getListConvenience])
+
+    const changeHandlerForm = event => {
+        setForm({...form, [event.target.name]: event.target.value})
+    }
+
+    const changeHandlerConvenience = event => {
+        setListConvenience({...listConvenience, [event.target.name]: event.target.value})
+        console.log(listConvenience)
+    }
+
+    const createRoomHandler = async () => {
+        try {
+            const data = await request('/api/room/create', 'POST', {...form})
+            message(data.message)
+            console.log(data.room)
+            history.push(`/api/room/${data.room._id}`)
         }
         catch (e) {}
     }
 
-    useEffect(() => {
-        message(error)
-        clearErrors()
-    }, [error, message, clearErrors])
-
-    useEffect(() => {
-        window.M.updateTextFields()
-        let tabs = document.querySelectorAll('.tabs')
-        let modal = document.querySelectorAll('.modal')
-        let select = document.querySelectorAll('select');
-        window.M.Tabs.init(tabs)
-        window.M.Modal.init(modal)
-        window.M.FormSelect.init(select)
-    }, [])
-
-    const createRoomHandler = () => {
-
-    }
-
     const addConvenienceHandler = () => {
-        setForm(form.convenience.push())
-    }
-
-    const changeHandlerConvenience = event => {
-        setForm({...conveniences, [event.target.name]: event.target.value})
-    }
-
-    const changeHandlerForm = event => {
-        setForm({...form, [event.target.name]: event.target.value})
+        setForm(form.convenience.push(listConvenience))
+        console.log('New form -', form)
     }
 
     return (
@@ -65,7 +78,7 @@ export const CreateRoom = () => {
                 <div className="col s12">
                     <ul className="tabs" style={{paddingBottom: '2rem'}}>
                         <li className="tab col s3"><a className="active" href="#basic">Basic parameters</a></li>
-                        <li onClick={loadListHandler} className="tab col s3"><a href="#convenience">Convenience</a></li>
+                        <li className="tab col s3"><a href="#convenience">Convenience</a></li>
                     </ul>
                 </div>
                 <div id="basic" className="col s12">
@@ -82,11 +95,12 @@ export const CreateRoom = () => {
                     </div>
                     <div className="input-field">
                     <textarea
-                        id="textarea1"
+                        id="description"
                         className="materialize-textarea"
                         name="description"
+                        onChange={changeHandlerForm}
                     />
-                        <label htmlFor="textarea1">Description</label>
+                        <label htmlFor="description">Description</label>
                     </div>
                     <div className="input-field">
                         <input
@@ -131,11 +145,15 @@ export const CreateRoom = () => {
                 </div>
 
                 <div id="convenience" className="col s12">
-                    {form.convenience.length ? null : <p>Convenience have not been added yet.</p>}
+                    <div className="collection">
+                        {
+                            form.convenience.map((conv, index) => <a href="#!" className="collection-item"><span className="badge">1</span>Alan</a>)
+                        }
+                    </div>
                     <div className="input-field" style={{padding: '15px 0 15px 0'}}>
-                        <select defaultValue="DEFAULT" id="select">
+                        <select defaultValue="DEFAULT" className="browser-default" onChange={changeHandlerConvenience} name="_id" id="_id">
                             <option defaultValue="DEFAULT" value="DEFAULT" disabled>Choose your option</option>
-                            {listConv.map((conv, index) => <option key={index} value={conv.title}>{conv.title + ' ' + conv.manufacturer}</option>)}
+                            {list.map((conv, index) => <option key={index} value={conv._id}>{conv.title + ' ' + conv.manufacturer}</option>)}
                         </select>
                     </div>
                     <div className="input-field">
@@ -145,6 +163,7 @@ export const CreateRoom = () => {
                             type="number"
                             name="quantity"
                             autoComplete="off"
+                            onChange={changeHandlerConvenience}
                         />
                         <label htmlFor="quantity">Quantity</label>
                     </div>

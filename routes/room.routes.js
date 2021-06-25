@@ -3,16 +3,17 @@ const router = Router()
 const Room = require('../models/Room')
 const config = require('config')
 
-router.post('/create-room', async (request, response) => {
+router.post('/create', async (request, response) => {
     try {
-        const {title, description, square, cost, beds, conveniences} = request.body
+        const {title, description, cost, square, beds, conveniences} = request.body
         const room = new Room({
             title, description, square, cost, beds, conveniences
         })
         await room.save()
-        response.status(201).json({message: 'Room is created!'})
+        response.status(201).json({message: 'Room is created!', room})
     }
     catch (e) {
+        console.log(e)
         response.status(500).json({message: 'Server error, please try again!'})
     }
 })

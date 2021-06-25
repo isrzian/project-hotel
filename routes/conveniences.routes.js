@@ -24,4 +24,15 @@ router.get('/', async (request, response) => {
     }
 })
 
+router.delete('/delete/:id', async (request, response) => {
+    try {
+        const idConvenience = request.params.id
+        await Convenience.deleteOne({_id: idConvenience})
+        response.status(200).json({message: 'Convenience successful deleted!'})
+    }
+    catch (e) {
+        response.status(500).json({message: 'Server error, please try again!'})
+    }
+})
+
 module.exports = router
