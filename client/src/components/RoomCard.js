@@ -1,34 +1,18 @@
-import React, {Fragment, useEffect} from "react";
-
-useEffect(() => {
-    window.M.updateTextFields()
-    let tabs = document.querySelectorAll('.tabs')
-    window.M.Tabs.init(tabs)
-}, [])
+import React, {Fragment} from "react";
 
 export const RoomCard = ({room}) => {
     return (
         <Fragment>
-            <div className="card">
-                <div className="card-content">
-                    <p>{room.title}</p>
-                    <p>{room.description}</p>
-                </div>
-                <div className="card-tabs">
-                    <ul className="tabs tabs-fixed-width">
-                        <li className="tab"><a className="active" href="#basic">Basic information</a></li>
-                        <li className="tab"><a href="#convenience">Conveniences</a></li>
-                    </ul>
-                </div>
-                <div className="card-content grey lighten-4">
-                    <div id="basic">
-                        <p>Beds: {room.beds}</p>
-                        <p>Cost: {room.cost}</p>
-                        <p>Square: {room.square}</p>
-                    </div>
-                    <div id="convenience">Test conveniences</div>
-                </div>
-            </div>
+            <h2>Room</h2>
+            <p>Title: {room.title}</p>
+            <p>Description: {room.description}</p>
+            <p>Cost per night: {room.cost}</p>
+            <p>Beds: {room.beds}</p>
+            <p>Square: {room.square}</p>
+            <p>Conveniences:</p>
+            <ul className="collection">
+                {room.conveniences.map((conv, index) => <li key={index} className="collection-item">{conv.title}</li>)}
+            </ul>
         </Fragment>
     )
 }

@@ -32,6 +32,7 @@ router.get('/:id', async (request, response) => {
     try {
         const room = await Room.findById(request.params.id)
         response.json(room)
+        console.log(room)
     }
     catch (e) {
         response.status(500).json({message: 'Server error, please try again!'})

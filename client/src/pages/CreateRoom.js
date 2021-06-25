@@ -62,7 +62,7 @@ export const CreateRoom = () => {
             const data = await request('/api/room/create', 'POST', {...form})
             message(data.message)
             console.log(data.room)
-            history.push(`/api/room/${data.room._id}`)
+            history.push(`/room/${data.room._id}`)
         }
         catch (e) {}
     }

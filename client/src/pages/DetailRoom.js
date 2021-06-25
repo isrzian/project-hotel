@@ -10,7 +10,8 @@ export const DetailRoom = () => {
     const {request, loading} = useHttp()
     const getRoom = useCallback(async () => {
         try {
-            const fetchedRoom = request(`/api/room/${roomId}`, 'GET')
+            const fetchedRoom = request(`/api/room/${roomId}`, 'GET', null)
+            console.log(fetchedRoom)
             setRoom(fetchedRoom)
         }
         catch (e) {}
