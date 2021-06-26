@@ -8,9 +8,9 @@ export const CreateRoom = () => {
     const message = useMessage()
     const {request, loading, error, clearErrors} = useHttp()
 
-    const [list, setList] = useState([]) // all convenience
-
-    const [listConvenience, setListConvenience] = useState({  //convenience for form
+    const [list, setList] = useState([]) // load all convenience for select
+    const [listConvenienceRoom, setListConvenienceRoom] = useState([]) // list convenience for form
+    const [convenience, setConvenience] = useState({  // value for add convenience
         _id: '', quantity: 0
     })
 
@@ -24,8 +24,7 @@ export const CreateRoom = () => {
         description: '',
         cost: 0,
         square: 0,
-        beds: 0,
-        convenience: []
+        beds: 0
     })
 
     useEffect(() => {
@@ -53,23 +52,20 @@ export const CreateRoom = () => {
     }
 
     const changeHandlerConvenience = event => {
-        setListConvenience({...listConvenience, [event.target.name]: event.target.value})
-        console.log(listConvenience)
+        setConvenience({...convenience, [event.target.name]: event.target.value})
     }
 
     const createRoomHandler = async () => {
         try {
-            const data = await request('/api/room/create', 'POST', {...form})
+            const data = await request('/api/room/create', 'POST', {...form, ...listConvenienceRoom})
             message(data.message)
-            console.log(data.room)
             history.push(`/room/${data.room._id}`)
         }
         catch (e) {}
     }
 
     const addConvenienceHandler = () => {
-        setForm(form.convenience.push(listConvenience))
-        console.log('New form -', form)
+        setListConvenienceRoom([...listConvenienceRoom, convenience])
     }
 
     return (
@@ -147,7 +143,7 @@ export const CreateRoom = () => {
                 <div id="convenience" className="col s12">
                     <div className="collection">
                         {
-                            form.convenience.map((conv, index) => <a href="#!" className="collection-item"><span className="badge">1</span>Alan</a>)
+                            listConvenienceRoom.map((conv, index) => <a key={index} href="#!" className="collection-item"><span key={index + 5} className="badge">{conv.quantity}</span>Alan</a>)
                         }
                     </div>
                     <div className="input-field" style={{padding: '15px 0 15px 0'}}>

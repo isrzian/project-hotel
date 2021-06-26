@@ -35,12 +35,11 @@ export const ConveniencePage = () => {
         getListConvenience()
     }, [getListConvenience])
 
-    const deleteConvenienceHandler = (id, index) => {
+    const deleteConvenienceHandler = (id) => {
         return async () => {
             try {
                 const data = await request(`/api/convenience/delete/${id}`, 'DELETE', {...form})
-                const listConvenience = await request('/api/convenience')
-                setList(listConvenience)
+                setList(list.filter(c => c._id !== id))
                 message(data.message)
             }
             catch (e) {}
@@ -50,6 +49,7 @@ export const ConveniencePage = () => {
     const createConvenienceHandler = async () => {
         try {
             const data = await request('/api/convenience/create', 'POST', {...form})
+            setList([...list, form])
             setForm({title: '', manufacturer: ''})
             message(data.message)
         }
@@ -66,7 +66,7 @@ export const ConveniencePage = () => {
                 <div className="col s12">
                     <ul className="tabs" style={{paddingBottom: '2rem'}}>
                         <li className="tab col s3"><a className="active" href="#add">Add convenience</a></li>
-                        <li onClick={getListConvenience} className="tab col s3"><a href="#list">List of convenience</a></li>
+                        <li className="tab col s3"><a href="#list">List of convenience</a></li>
                     </ul>
                 </div>
                 <div id="add" className="col s12">

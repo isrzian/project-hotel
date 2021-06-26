@@ -1,17 +1,15 @@
-import React, {useCallback, useEffect, useState, Fragment} from "react";
-import {useParams} from 'react-router-dom'
+import React, {useCallback, useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import {useHttp} from "../hooks/http.hook";
 import {Loader} from "../components/UI/Loader";
-import {RoomReview} from "../components/RoomReview";
 
-export const DetailRoom = () => {
+export const EditRoom = () => {
     const [room, setRoom] = useState(null)
     const roomId = useParams().id
     const {request, loading} = useHttp()
     const getRoom = useCallback(async () => {
         try {
-            const fetchedRoom = await request(`/api/room/${roomId}`, 'GET', null)
-            console.log(fetchedRoom)
+            const fetchedRoom = request(`/api/room/${roomId}`, 'GET', null)
             setRoom(fetchedRoom)
         }
         catch (e) {}
@@ -26,8 +24,7 @@ export const DetailRoom = () => {
     }
 
     return (
-        <Fragment>
-            {!loading && room && <RoomReview room={room} />}
-        </Fragment>
+        <>
+        </>
     )
 }

@@ -5,6 +5,7 @@ import {CreateRoom} from "./pages/CreateRoom";
 import {DetailRoom} from "./pages/DetailRoom";
 import {AuthPage} from "./pages/AuthPage";
 import {ConveniencePage} from "./pages/ConveniencePage";
+import {EditRoom} from "./pages/EditRoom";
 
 export const useRoutes = isAuthenticated => {
     if (isAuthenticated) {
@@ -14,6 +15,7 @@ export const useRoutes = isAuthenticated => {
                 <Route path="/create-room" component={CreateRoom} exact />
                 <Route path="/conveniences" component={ConveniencePage} exact />
                 <Route path="/room/:id" component={DetailRoom} />
+                <Route path="/edit-room/:id" component={EditRoom} />
                 <Redirect to="/rooms" />
             </Switch>
         )
