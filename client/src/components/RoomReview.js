@@ -11,7 +11,7 @@ export const RoomReview = ({room}) => {
             <p>Square: {room.square}</p>
             <p>Conveniences:</p>
             <ul className="collection">
-                {room.conveniences.map((conv, index) => <li key={index} className="collection-item">{conv.title + ', ' + conv.quantity + ' units'}</li>)}
+                {room.conveniences.map((conv, index) => <li key={index} className="collection-item">{conv._id.title + ', ' + conv.quantity + ' units'}</li>)}
             </ul>
         </Fragment>
     )

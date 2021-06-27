@@ -41,23 +41,28 @@ export const RoomsPage = () => {
         }
     }
 
-    // if (loading) {
-    //     return <Loader />
-    // }
+    if (loading) {
+        return (
+            <>
+                <h1>Rooms Page</h1>
+                <Loader />
+            </>
+        )
+    }
 
     return (
         <div>
             <h1>Rooms Page</h1>
             {
                 rooms.length ?
-                    rooms.map((room, index) =>
+                    rooms.map((room) =>
                         <RoomCard
                             title={room.title}
                             square={room.square}
                             description={room.description}
                             beds={room.beds}
                             cost={room.cost}
-                            convenience={room.convenience}
+                            conveniences={room.conveniences}
                             deleteHandler={deleteRoomHandler(room._id)}
                             editHandler={editRoomHandler(room._id)}
                         />)

@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RoomCard = ({title, description, beds, cost, square, convenience, editHandler, deleteHandler}) => {
+export const RoomCard = ({title, description, beds, cost, square, conveniences, editHandler, deleteHandler}) => {
     return (
             <div className="row">
                 <div className="col s12 m6">
@@ -13,8 +13,10 @@ export const RoomCard = ({title, description, beds, cost, square, convenience, e
                             <p>Square: {square}</p>
                             <p>Convenience: </p>
                             {
-                                convenience ? <ul>{convenience}</ul> : <p>Conveniences not added.</p>
-                                    // {convenience.map((conv, index) => <li key={index}>{conv.title + ' ' + conv.manufacturer}</li>)}
+                                conveniences.length ?
+                                    <ul>
+                                        {conveniences.map((conv, index) => <li key={index}>{conv._id.title + ', ' + conv.quantity + ' units'}</li>)}
+                                    </ul> : <p>Conveniences not added.</p>
                             }
                         </div>
                         <div className="card-action">

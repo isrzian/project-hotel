@@ -57,7 +57,11 @@ export const CreateRoom = () => {
     const createRoomHandler = async () => {
         try {
             let fullForm = form
-            fullForm.conveniences = listConvenienceRoom
+            fullForm.conveniences = listConvenienceRoom.map(list => ({
+                _id: list._id,
+                quantity: list.quantity,
+                __v: list.__v
+            }))
             const data = await request('/api/room/create', 'POST', {...fullForm})
             message(data.message)
             history.push(`/room/${data.room._id}`)
@@ -158,7 +162,7 @@ export const CreateRoom = () => {
                             <div className="collection">
                                 {
                                     listConvenienceRoom.map((conv, index) =>
-                                    <a key={index} className="collection-item">
+                                    <a key={index} href="#basic" className="collection-item">
                                     <span key={index + 5} className="badge">
                                         <i onClick={deleteConvenienceRoomHandler(conv._id)} style={{cursor: 'pointer'}}
                                            className="material-icons">clear</i>

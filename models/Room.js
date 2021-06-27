@@ -24,10 +24,14 @@ const schema = new Schema({
     },
     conveniences: [
         {
-            type: Types.ObjectId,
-            ref: 'Convenience',
-            quantity: Number,
-            default: []
+            _id: {
+                type: Types.ObjectId,
+                ref: 'Convenience'
+            },
+            quantity: {
+                type: Number,
+                default: 0
+            }
         }
     ]
 })
