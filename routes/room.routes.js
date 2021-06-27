@@ -1,6 +1,7 @@
 const {Router} = require('express')
 const router = Router()
 const Room = require('../models/Room')
+const Conveniences = require('../models/Convenience')
 
 router.post('/create', async (request, response) => {
     try {
@@ -18,7 +19,10 @@ router.post('/create', async (request, response) => {
 
 router.get('/', async (request, response) => {
     try {
-        const rooms = await Room.find({})
+        const rooms = await Room.find({}).populate([{
+            model: 'Convenience',
+            path: 'conveniences'
+        }])
         response.json(rooms)
     }
     catch (e) {
@@ -28,7 +32,10 @@ router.get('/', async (request, response) => {
 
 router.get('/:id', async (request, response) => {
     try {
-        const room = await Room.findById(request.params.id)
+        const room = await Room.findById(request.params.id).populate([{
+            model: 'Convenience',
+            path: 'conveniences'
+        }])
         response.json(room)
     }
     catch (e) {
@@ -42,7 +49,7 @@ router.put('/edit/:id', async (request,response) => {
         const room = await Room.findById(request.params.id)
         room.updateOne(title, description, cost, square, beds, conveniences)
         room.save()
-        response.json({message: 'The room was successfully edited!'})
+        response.json({room, message: 'The room was successfully edited!'})
     }
     catch (e) {
         response.status(500).json({message: 'Server error, please try again!'})

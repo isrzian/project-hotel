@@ -108,7 +108,7 @@ export const ConveniencePage = () => {
                             return (
                                 <li className="collection-item" key={index}>
                                     {convenience.title} - {convenience.manufacturer}
-                                    <span className="badge"><i onClick={deleteConvenienceHandler(convenience._id, index)} style={{cursor: 'pointer'}} className="material-icons">clear</i></span>
+                                    <span className="badge"><i onClick={deleteConvenienceHandler(convenience._id)} style={{cursor: 'pointer'}} className="material-icons">clear</i></span>
                                 </li>
                             )
                         }) : <p>Conveniences have not been added yet.</p>}

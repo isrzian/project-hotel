@@ -13,12 +13,8 @@ export const RoomCard = ({title, description, beds, cost, square, convenience, e
                             <p>Square: {square}</p>
                             <p>Convenience: </p>
                             {
-                                convenience.length
-                                    ?
-                                    <ul>
-                                        {convenience.map((conv, index) => <li key={index}>{conv.title + ' ' + conv.manufacturer}</li>)}
-                                    </ul>
-                                    : <p>Convenience is not added.</p>
+                                convenience ? <ul>{convenience}</ul> : <p>Conveniences not added.</p>
+                                    // {convenience.map((conv, index) => <li key={index}>{conv.title + ' ' + conv.manufacturer}</li>)}
                             }
                         </div>
                         <div className="card-action">

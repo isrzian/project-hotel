@@ -10,9 +10,7 @@ export const CreateRoom = () => {
 
     const [list, setList] = useState([]) // load all convenience for select
     const [listConvenienceRoom, setListConvenienceRoom] = useState([]) // list convenience for form
-    const [convenience, setConvenience] = useState({  // value for add convenience
-        _id: '', quantity: 0
-    })
+    const [convenience, setConvenience] = useState({})  // value for add convenience
 
     useEffect(() => {
         message(error)
@@ -24,7 +22,8 @@ export const CreateRoom = () => {
         description: '',
         cost: 0,
         square: 0,
-        beds: 0
+        beds: 0,
+        conveniences: []
     })
 
     useEffect(() => {
@@ -57,7 +56,9 @@ export const CreateRoom = () => {
 
     const createRoomHandler = async () => {
         try {
-            const data = await request('/api/room/create', 'POST', {...form, ...listConvenienceRoom})
+            let fullForm = form
+            fullForm.conveniences = listConvenienceRoom
+            const data = await request('/api/room/create', 'POST', {...fullForm})
             message(data.message)
             history.push(`/room/${data.room._id}`)
         }
@@ -65,7 +66,18 @@ export const CreateRoom = () => {
     }
 
     const addConvenienceHandler = () => {
-        setListConvenienceRoom([...listConvenienceRoom, convenience])
+        if (listConvenienceRoom.find(c => c._id === convenience.convenience)) {
+            return message('This attribute has already been added!')
+        }
+        const selectConvenience = list.find(c => c._id === convenience.convenience)
+        selectConvenience.quantity = convenience.quantity
+        setListConvenienceRoom([...listConvenienceRoom, selectConvenience])
+    }
+
+    const deleteConvenienceRoomHandler = (id) => {
+        return () => {
+            setListConvenienceRoom(listConvenienceRoom.filter(c => c._id !== id))
+        }
     }
 
     return (
@@ -141,13 +153,23 @@ export const CreateRoom = () => {
                 </div>
 
                 <div id="convenience" className="col s12">
-                    <div className="collection">
-                        {
-                            listConvenienceRoom.map((conv, index) => <a key={index} href="#!" className="collection-item"><span key={index + 5} className="badge">{conv.quantity}</span>Alan</a>)
-                        }
-                    </div>
+                    {
+                        listConvenienceRoom.length ?
+                            <div className="collection">
+                                {
+                                    listConvenienceRoom.map((conv, index) =>
+                                    <a key={index} className="collection-item">
+                                    <span key={index + 5} className="badge">
+                                        <i onClick={deleteConvenienceRoomHandler(conv._id)} style={{cursor: 'pointer'}}
+                                           className="material-icons">clear</i>
+                                    </span>
+                                        {conv.title + ', ' + conv.quantity + ' units'}
+                                    </a>)
+                                }
+                            </div> : <p>Convenience not added.</p>
+                    }
                     <div className="input-field" style={{padding: '15px 0 15px 0'}}>
-                        <select defaultValue="DEFAULT" className="browser-default" onChange={changeHandlerConvenience} name="_id" id="_id">
+                        <select defaultValue="DEFAULT" className="browser-default" onChange={changeHandlerConvenience} name="convenience" id="convenience">
                             <option defaultValue="DEFAULT" value="DEFAULT" disabled>Choose your option</option>
                             {list.map((conv, index) => <option key={index} value={conv._id}>{conv.title + ' ' + conv.manufacturer}</option>)}
                         </select>
@@ -157,6 +179,7 @@ export const CreateRoom = () => {
                             placeholder="Quantity..."
                             id="quantity"
                             type="number"
+                            min={1}
                             name="quantity"
                             autoComplete="off"
                             onChange={changeHandlerConvenience}
