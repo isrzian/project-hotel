@@ -23,13 +23,14 @@ router.post(
                 })
             }
             const {email, password} = request.body
-            const candidate = await User.findOne({email})
+            const validateEmail = email.toLowerCase()
+            const candidate = await User.findOne({validateEmail})
             if (candidate) {
                 return response.status(400).json({message: "This user already exists!"})
             }
             const hashedPassword = await bcrypt.hash(password, 12)
             const user = new User({
-                email,
+                email: validateEmail,
                 password: hashedPassword
             })
             await user.save()

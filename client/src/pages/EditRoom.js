@@ -121,6 +121,7 @@ export const EditRoom = () => {
                     </div>
                     <div id="basic" className="col s12">
                         <div className="input-field">
+                            <span>Title</span>
                             <input
                                 placeholder="Enter the name of the room..."
                                 id="title"
@@ -132,6 +133,7 @@ export const EditRoom = () => {
                             />
                         </div>
                         <div className="input-field">
+                            <span>Description</span>
                     <textarea
                         id="description"
                         className="materialize-textarea"
@@ -141,6 +143,7 @@ export const EditRoom = () => {
                     />
                         </div>
                         <div className="input-field">
+                            <span>Square</span>
                             <input
                                 placeholder="Enter the area of the room..."
                                 id="square"
@@ -152,6 +155,7 @@ export const EditRoom = () => {
                             />
                         </div>
                         <div className="input-field">
+                            <span>Cost</span>
                             <input
                                 placeholder="Enter the room rate per night..."
                                 id="cost"
@@ -163,6 +167,7 @@ export const EditRoom = () => {
                             />
                         </div>
                         <div className="input-field">
+                            <span>Beds</span>
                             <input
                                 placeholder="Enter the beds of room..."
                                 id="beds"
