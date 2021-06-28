@@ -1,7 +1,6 @@
 const {Router} = require('express')
 const router = Router()
 const Room = require('../models/Room')
-const Conveniences = require('../models/Convenience')
 
 router.post('/create', async (request, response) => {
     try {
@@ -47,13 +46,12 @@ router.get('/:id', async (request, response) => {
 router.put('/edit/:id', async (request,response) => {
     try {
         const {title, description, cost, square, beds, conveniences} = request.body
-        const room = await Room.findById(request.params.id)
-        room.updateOne(title, description, cost, square, beds, conveniences)
-        room.save()
-        response.json({room, message: 'The room was successfully edited!'})
+        const updateRoom = await Room.findByIdAndUpdate({_id: request.params.id}, {title, description, cost, square, beds, conveniences})
+        updateRoom.save()
+        response.json({message: 'The room was successfully edited!'})
     }
     catch (e) {
-        response.status(500).json({message: 'Server error, please try again!'})
+        response.status(500).json({message: 'Update error, please try again!'})
     }
 })
 

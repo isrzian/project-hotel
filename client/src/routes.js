@@ -15,7 +15,7 @@ export const useRoutes = isAuthenticated => {
                 <Route path="/create-room" component={CreateRoom} exact />
                 <Route path="/conveniences" component={ConveniencePage} exact />
                 <Route path="/room/:id" component={DetailRoom} />
-                <Route path="/edit-room/:id" component={EditRoom} />
+                <Route path="/edit/:id" component={EditRoom} />
                 <Redirect to="/rooms" />
             </Switch>
         )

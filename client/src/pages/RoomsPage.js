@@ -13,7 +13,6 @@ export const RoomsPage = () => {
     const getRoom = useCallback(async () => {
         try {
             const fetchedRooms = await request(`/api/room/`, 'GET', null)
-            console.log(fetchedRooms)
             setRooms(fetchedRooms)
         }
         catch (e) {}
@@ -24,18 +23,26 @@ export const RoomsPage = () => {
     }, [getRoom])
 
     const editRoomHandler = (id) => {
-        return async () => {
-            history.push(`/api/room/edit/${id}`)
+        return () => {
+            history.push(`/edit/${id}`)
         }
     }
 
     const deleteRoomHandler = (id) => {
         return async () => {
             try {
-                console.log('Rooms -', rooms)
                 const data = await request(`/api/room/delete/${id}`, 'DELETE', {...rooms})
                 setRooms(rooms.filter(c => c._id !== id))
                 message(data.message)
+            }
+            catch (e) {}
+        }
+    }
+
+    const openDetailRoom = (id) => {
+        return async () => {
+            try {
+                history.push(`/room/${id}`)
             }
             catch (e) {}
         }
@@ -55,7 +62,7 @@ export const RoomsPage = () => {
             <h1>Rooms Page</h1>
             {
                 rooms.length ?
-                    rooms.map((room) =>
+                    rooms.map((room, index) =>
                         <RoomCard
                             title={room.title}
                             square={room.square}
@@ -65,6 +72,8 @@ export const RoomsPage = () => {
                             conveniences={room.conveniences}
                             deleteHandler={deleteRoomHandler(room._id)}
                             editHandler={editRoomHandler(room._id)}
+                            key={index}
+                            detail={openDetailRoom(room._id)}
                         />)
                             : <p>Rooms is not added.</p>
             }

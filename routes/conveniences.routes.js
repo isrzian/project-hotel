@@ -14,6 +14,7 @@ router.post('/create', async (request, response) => {
     }
 })
 
+// /api/convenience/
 router.get('/', async (request, response) => {
     try {
         const convenience = await Convenience.find({})

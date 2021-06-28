@@ -11,7 +11,6 @@ export const DetailRoom = () => {
     const getRoom = useCallback(async () => {
         try {
             const fetchedRoom = await request(`/api/room/${roomId}`, 'GET', null)
-            console.log(fetchedRoom)
             setRoom(fetchedRoom)
         }
         catch (e) {}

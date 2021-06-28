@@ -73,6 +73,9 @@ export const CreateRoom = () => {
         if (listConvenienceRoom.find(c => c._id === convenience.convenience)) {
             return message('This attribute has already been added!')
         }
+        if (!convenience.quantity) {
+            return message('Enter the quantity!')
+        }
         const selectConvenience = list.find(c => c._id === convenience.convenience)
         selectConvenience.quantity = convenience.quantity
         setListConvenienceRoom([...listConvenienceRoom, selectConvenience])
